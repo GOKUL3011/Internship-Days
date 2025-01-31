@@ -1,0 +1,157 @@
+# JAVA SCRIPT
+
+### Difference b/w var let const
+
+let	         reassign        redeclare      function scope
+var	         reassign        no	                 block scope
+const	 no                   no                   block scope
+
+### Datatypes
+
+- *Number
+- int
+- float
+- Infinity
+- NaN*
+- *String*
+- *Boolean*
+- *Array and Objects*
+- *Undefined*
+- *null*
+- *Big Int*
+
+### Printing in console
+
+```jsx
+const message = 'Hello world'
+// Log to console
+console.log(message)
+```
+
+### Usage of Template literal
+
+```jsx
+const myName="Gokul"
+const myRoll=40
+console.log("My name is",myName,"My roll is",myRoll)
+console.log(`My name is ${myName} My roll is ${myRoll}`) //template literal
+```
+
+### Note:
+
+**If none of let,var,const is specified then var will be default
+this is known to be hoisting**
+
+### Hoisting
+
+Hoisting is built-in behavior that moves the declarations of functions, variables, and classes to the top of their scope before the code is executed
+
+### ARRAY AND OBJECTS
+
+```jsx
+//Object
+const person={
+    roll:40,
+    name:"Gokul"
+}
+person.name="ram"
+console.log(person.name)
+
+o/p
+ram
+
+//Array
+const a=[10,20,30]
+/*
+0:10
+1:20
+2:30
+*/
+```
+
+### Paragraph based string
+
+```jsx
+var a=`this is 
+a para`
+console.log(a)
+```
+
+### Null
+
+```jsx
+var a=null
+console.log(typeof(a))
+
+o/p
+Object
+```
+
+### Boolean
+
+```jsx
+var a=false
+var b=true
+console.log(5<2)
+
+o/p
+false
+```
+
+### Infinity and NaN
+
+```jsx
+c = Infinity;
+d = 10 / 0;
+e = 5 < Infinity;
+f = 'hai' * 3;
+g=NaN
+console.log(c);
+console.log(d);
+console.log(e);
+console.log(f);
+console.log(g);
+
+o/p
+Infinity
+Infinity
+true
+NaN
+NaN
+```
+
+### Undefined datatype
+
+```jsx
+var a
+console.log(a,typeof(a))
+
+o/p
+undefined undefined
+```
+
+### Big Int
+
+```jsx
+var num=32432423442343242342342222222222n  // ending with n
+console.log(num)
+
+o/p
+32432423442343242342342222222222n
+```
+
+### Comparison
+
+```jsx
+var a=1
+var b='1'
+console.log(a==b) // True
+console.log(a===b) // False (Checks the datatype)
+console.log(a!=b) // False
+console.log(a!==b) //True
+```
+
+### Exponential
+var a=2
+var b=4
+console.log(a**b) //16

@@ -1,0 +1,719 @@
+To set express for connectivty of node and mongodb
+
+```
+npm i --s express express-handlebars body-parser 
+```
+
+## Express
+
+### Purpose
+
+- it is fast,minimalist web framework for Node.js.
+- It provides tools to build web applications and APIs
+
+### Usage
+
+- To handle HTTP requests and responses.
+- To create routes for different endpoints (e.g GET,POST,PUT,DELETE)
+- To integrate middleware for processing requests
+
+## Express-handlebars
+
+### Purpose
+
+This package is an express.js tempate engine for rendering dynamic HTMlpages using handlebars syntax
+
+### Usage
+
+- To serve dynamic content by combining HTML templates with JavaScript data
+- To create reusable components like headers,footers,etc
+
+## Boby-parser
+
+### Purpose
+
+It is the middle ware that parse incoming request bodies in a middleware before your handlers making the request data accessible in req body. It is especially useful for handling POST request.
+
+### Usage
+
+- To parse JSON data from the request body
+- To parse URL- encoded data from forms
+
+To prevent restart manually
+
+```
+npm i -g nodemon
+```
+
+### app.js
+
+```jsx
+const express=require('express')
+const exhbs=require("express-handlebars")
+
+const app=express() //return express obj
+
+app.engine('hbs',   //engine name
+    exhbs.engine({
+        layoutsDir:'viewsfold/',  //folder name
+        defaultLayout:'maincopy', //default file
+        extname:'hbs'  //ext of file
+    })
+);
+
+app.set('view engine','hbs');
+app.set('views','viewsfold');
+
+//Routes
+app.get('/', (req,res)=>{
+    const msg='test';
+    res.render('maincopy',{msg}); //file name to where it need to render
+});
+
+//Start the server
+app.listen(8000,()=>{
+    console.log('Listening on port 8000...')
+})
+```
+
+need to set the engine name and directory where the folder file is there
+
+```jsx
+const express=require('express')
+const exhbs=require("express-handlebars")
+
+const app=express() //return express obj
+
+app.engine('hbs',   //engine name
+    exhbs.engine({
+        layoutsDir:'viewsfold/',  //folder name
+        defaultLayout:'maincopy', //default file
+        extname:'hbs'  //ext of file
+    })
+);
+```
+
+```jsx
+app.set('view engine','hbs');
+app.set('views','viewsfold');
+```
+
+Here 'view engine' is inbult in which we are providing the name of the engine
+'view' is also inbulit in which providing the folder name
+
+```jsx
+//Routes
+app.get('/', (req,res)=>{
+    const msg='test';
+    res.render('maincopy',{msg}); //file name to where it need to render
+});
+```
+
+Using get function here which takes two args 
+1st is the url where it need to display or work on it
+2nd is a call back function which takes two args (req,res) as inbuilt
+
+```jsx
+//Start the server
+app.listen(8000,()=>{
+    console.log('Listening on port 8000...')
+})
+```
+
+To run the server port num is given on which it will start
+
+### maincopy.hbs
+
+```jsx
+<!DOCTYPE html>
+<html lang="'en">
+    <head>
+        <title>MONGODB CRUD </title>
+    </head>
+    <body>
+        <h1>MongoDB Crud example</h1>
+        <p>{{msg}}</p>
+    </body>
+
+</html>
+```
+
+### Connectivity to MongoDB
+
+install the package
+
+```
+npm i mongodb
+```
+
+### db.js
+
+```jsx
+const mongodb=require('mongodb')
+const mongoClient=mongodb.MongoClient
+
+let database
+
+async function getDatabase(){
+    const client=await mongoClient.connect('mongodb://127.0.0.1:27017')
+    database= client.db("intern") //to create database
+    if(!database){
+        console.log("Database connected successfully")
+    }
+    else{
+        console.log("Database connection failed")
+    }
+    return database
+}
+
+module.exports={getDatabase} //export the function
+```
+
+- import mongodb
+- create mongodb.MongoClient
+- create function getDatabase()
+- 'mongodb://127.0.0.1:27017' is constant to connect with mongodb
+- Create database using .db()
+- export the function
+
+Here await is used because while connecting it returns promise and if await is used then async must be used
+
+### app.js
+
+```jsx
+const express=require('express')
+const exhbs=require("express-handlebars")
+const dbo=require('./db')
+
+const app=express()
+
+app.engine('hbs',
+    exhbs.engine({
+        layoutsDir:'viewfold/',
+        defaultLayout:'maincopy',
+        extname:'hbs'
+    })
+);
+
+app.set('view engine','hbs');
+app.set('views','viewfold');
+
+//Routes
+app.get('/', async (req,res)=>{
+    let database=await dbo.getDatabase();//connection to database
+    const collection=database.collection("emp")//creating collection
+    const cursur=collection.find({})//find() to get cursur object
+    let datas=await cursur.toArray()//using toArrary to fetch the data
+    const msg=''
+    console.log('the data',datas)
+    res.render('maincopy',{msg,datas})
+});
+
+//Start the server
+app.listen(8000,()=>{
+    console.log('Listening on port 8000...')
+})
+```
+
+### maincopy.js
+
+```jsx
+<!DOCTYPE html>
+<html lang="'en">
+    <head>
+        <title>MONGODB CRUD </title>
+    </head>
+    <body>
+        <h1>MongoDB Crud example</h1>
+        <ul>
+            {{#each datas}}
+            <li>{{this.empid}} {{this.empname}}</li>
+            {{/each}}
+        </ul>
+        <p>{{msg}}</p>
+    </body>
+
+</html>
+```
+
+The above code will not execute if already database and collection is not created manually
+To overcome this instead of database.collection("emp") use database.createCollection(”emp”)
+This will create the collection but the database must be created
+
+### Inserting Data
+
+### maincopy.js
+
+```jsx
+<!DOCTYPE html>
+<html lang="'en">
+    <head>
+        <title>MONGODB CRUD </title>
+    </head>
+    <body>
+        <h1>MongoDB Crud example</h1>
+        <h2>Form</h2>
+        <form action="/empinfo" method="post">
+        <label>Emp id</label>
+        <input type="text" name="eid"><br>
+        <label>Emp Name</label>
+        <input type="text" name="ename"><br>
+        <input type="submit">
+        </form><br>
+
+        <ul>
+            {{#each datas}}
+            <li>{{this.empid}} {{this.empname}}</li>
+            {{/each}}
+        </ul>
+        <p>{{msg}}</p>
+    </body>
+
+</html>
+```
+
+- Created a form with action to redirect to the page on action and method post
+Only when fetching the data method should be get otherwise post
+- for each input name arg is with unique name
+
+### App.js
+
+```jsx
+const express=require('express')
+const exhbs=require("express-handlebars")
+const bodyParser=require("body-parser")
+const dbo=require('./db')
+
+const app=express()
+
+app.engine('hbs',
+    exhbs.engine({
+        layoutsDir:'viewfold/',
+        defaultLayout:'maincopy',
+        extname:'hbs'
+    })
+);
+
+app.set('view engine','hbs');
+app.set('views','viewfold');
+app.use(bodyParser.urlencoded({extended:true}))
+
+//Routes
+app.get('/', async (req,res)=>{
+    let database=await dbo.getDatabase();
+    const collection= database.collection("emp")
+    const cursur=collection.find({})
+    let datas=await cursur.toArray()
+    let msg=''
+    if(req.query.status=='1'){
+        msg='Inserted Successfully'
+    }
+    console.log('the data',datas)
+    res.render('maincopy',{msg,datas})
+});
+
+app.post('/empinfo', async (req,res)=>{
+    let database=await dbo.getDatabase()
+    const collection=database.collection("emp")
+    const employee={empid:req.body.eid , empname:req.body.ename}
+    await collection.insertOne(employee)
+
+    res.redirect('/?status=1');
+})
+
+//Start the server
+app.listen(8000,()=>{
+    console.log('Listening on port 8000...')
+})
+```
+
+- At first create [app.post](http://app.post) with the url and call back function
+- Inside getDatabase and mention the collection
+- In a variable give the insert data
+- {empid : req.body.eid , empname : req.body.ename} here empid and empname are the in collection and eid,ename are the name in html
+- Now res.redirect('/?status=1') here status and 1 are userdefined
+?status=1 is called query parameter
+- inside app.get 
+if(req.query.status=='1'){
+        msg='Inserted Successfully'
+    }
+this is included to check the data is inserted
+- BUT HERE ERROR OCCURS AS TypeError: Cannot read properties of undefined (reading 'eid')
+- To overcome BOBY PARSER is used
+- app.use(bodyParser.urlencoded({extended:true})) is used
+
+### Edit Form
+
+### App.js
+
+```jsx
+const express=require('express')
+const exhbs=require("express-handlebars")
+const bodyParser=require("body-parser")
+const dbo=require('./db')
+const objid=dbo.objectid
+
+const app=express()
+
+app.engine('hbs',
+    exhbs.engine({
+        layoutsDir:'viewfold/',
+        defaultLayout:'maincopy',
+        extname:'hbs'
+    })
+);
+
+app.set('view engine','hbs');
+app.set('views','viewfold');
+app.use(bodyParser.urlencoded({extended:true}))
+
+//Routes
+app.get('/', async (req,res)=>{
+    let database=await dbo.getDatabase();
+    const collection= database.collection("emp")
+    const cursur=collection.find({})
+    let datas=await cursur.toArray()
+    let msg=''
+    let edit_id,edit_emp
+
+    if(req.query.edit_idd){
+        edit_id=req.query.edit_idd
+        edit_emp=await collection.findOne({_id:new objid(edit_id)})
+    }
+
+    if(req.query.status==='1'){
+        msg='Inserted Successfully'
+    }
+    else if(req.query.status==='2'){
+        msg='Updated Successfully'
+    }
+    console.log('the data',datas)
+    res.render('maincopy',{msg,datas,edit_id,edit_emp})
+});
+
+app.post('/empinfo', async (req,res)=>{
+    let database=await dbo.getDatabase()
+    const collection=database.collection("emp")
+    const employee={empid:req.body.eid , empname:req.body.ename}
+    await collection.insertOne(employee)
+
+    res.redirect('/?status=1');
+})
+
+app.post('/updateinfo/:e_id', async (req,res)=>{
+    let database=await dbo.getDatabase()
+    const collection=database.collection("emp")
+    const employee={empid:req.body.eid , empname:req.body.ename}
+    let e_idd=req.params.e_id
+    await collection.updateOne({_id:new objid(e_idd)},{$set:employee})
+
+    res.redirect('/?status=2');
+})
+
+//Start the server
+app.listen(8000,()=>{
+    console.log('Listening on port 8000...')
+})
+```
+
+### maincopy.js
+
+```
+<!DOCTYPE html>
+<html lang="'en">
+    <head>
+        <title>MONGODB CRUD </title>
+    </head>
+    <body>
+        <h1>MongoDB Crud example</h1>
+
+        {{#if edit_id}}
+        <h2>Edit Form</h2>
+        <form action="/updateinfo/{{edit_id}}" method="post">
+            <label>Emp id</label>
+            <input type="text" name="eid" value="{{edit_emp.empid}}"><br><br>
+            <label>Emp Name</label>
+            <input type="text" name="ename" value="{{edit_emp.empname}}"><br><br>
+            <input type="submit" value="Update">
+        </form><br>
+        {{else}}
+        <h2>Create Form</h2>
+        <form action="/empinfo" method="post">
+            <label>Emp id</label>
+            <input type="text" name="eid"><br><br>
+            <label>Emp Name</label>
+            <input type="text" name="ename"><br><br>
+            <input type="submit">
+        </form><br>
+        {{/if}}
+
+        <ul>
+            {{#each datas}}
+            <li>{{this.empid}} {{this.empname}} <a href="/?edit_idd={{this._id}}">Edit</a></li>
+            {{/each}}
+        </ul>
+        <p>{{msg}}</p>
+    </body>
+
+</html>
+```
+
+### db.js
+
+```jsx
+const mongodb=require('mongodb')
+const mongoClient=mongodb.MongoClient
+
+let database
+let objectid=mongodb.ObjectId
+
+async function getDatabase(){
+    const client=await mongoClient.connect('mongodb://127.0.0.1:27017')
+    database= client.db("intern")
+    if(!database){
+        console.log("Database connected successfully")
+    }
+    else{
+        console.log("Database connection failed")
+    }
+    return database
+}
+
+module.exports={getDatabase,objectid}
+```
+
+we need to pass object id as in mongodb therefore let objectid=mongodb.ObjectId is used
+
+### Explaination
+
+In maincopy.js
+
+```jsx
+<ul>
+     {{#each datas}}
+   <li>{{this.empid}} {{this.empname}} <a href="/?edit_idd={{this._id}}">Edit</a></li>
+      {{/each}}
+</ul>
+```
+
+First step is to create href link with query parameter as ?edit_idd={{this._id}} 
+sending the data id which need to be edited
+
+In maincopy.js
+
+```jsx
+{{#if edit_id}}
+        <h2>Edit Form</h2>
+        <form action="/empinfo" method="post">
+            <label>Emp id</label>
+            <input type="text" name="eid"><br><br>
+            <label>Emp Name</label>
+            <input type="text" name="ename"><br><br>
+            <input type="submit">
+        </form><br>
+{{else}}
+        <h2>Create Form</h2>
+        <form action="/empinfo" method="post">
+            <label>Emp id</label>
+            <input type="text" name="eid"><br><br>
+            <label>Emp Name</label>
+            <input type="text" name="ename"><br><br>
+            <input type="submit">
+        </form><br>
+{{/if}}
+```
+
+Second step is to create a edit form same as like create form
+here we need to give if else based on the condition if edit_id is present or not
+this edit_id will be returned from app.js
+
+In App.js
+
+```jsx
+app.get('/', async (req,res)=>{
+    let database=await dbo.getDatabase();
+    const collection= database.collection("emp")
+    const cursur=collection.find({})
+    let datas=await cursur.toArray()
+    let msg=''
+    let edit_id,edit_emp
+
+    if(req.query.edit_idd){
+        edit_id=req.query.edit_idd
+        edit_emp=await collection.findOne({_id:new objid(edit_id)})
+    }
+
+    if(req.query.status==='1'){
+        msg='Inserted Successfully'
+    }
+    console.log('the data',datas)
+    res.render('maincopy',{msg,datas,edit_id,edit_emp})
+});
+```
+
+if(req.query.edit_idd){
+        edit_id=req.query.edit_idd
+        edit_emp=await collection.findOne({_id:new objid(edit_id)})
+    }
+This code is included to get edit_id and store the data in edit_emp
+then it is rendered to maincopy.js
+
+In maincopy.js
+
+```
+<h2>Edit Form</h2>
+        <form action="/updateinfo/{{edit_id}}" method="post">
+            <label>Emp id</label>
+            <input type="text" name="eid" value="{{edit_emp.empid}}"><br><br>
+            <label>Emp Name</label>
+            <input type="text" name="ename" value="{{edit_emp.empname}}"><br><br>
+            <input type="submit" value="Update">
+        </form><br>
+```
+
+while clicking on edit the values should display on textbox
+For that value is given from edit_emp
+
+In App.js
+
+```jsx
+app.post('/updateinfo/:e_id', async (req,res)=>{
+    let database=await dbo.getDatabase()
+    const collection=database.collection("emp")
+    const employee={empid:req.body.eid , empname:req.body.ename}
+    let e_idd=req.params.e_id
+    await collection.updateOne({_id:new objid(e_idd)},{$set:employee})
+
+    res.redirect('/?status=2');
+})
+```
+
+As the data is passed in url without using query we need to specify the link as /:e_id 
+using req.params.e_id the value is obtained and update query is executed
+
+### Delete Data
+
+App.js
+
+```jsx
+const express=require('express')
+const exhbs=require("express-handlebars")
+const bodyParser=require("body-parser")
+const dbo=require('./db')
+const objid=dbo.objectid
+
+const app=express()
+
+app.engine('hbs',
+    exhbs.engine({
+        layoutsDir:'viewfold/',
+        defaultLayout:'maincopy',
+        extname:'hbs'
+    })
+);
+
+app.set('view engine','hbs');
+app.set('views','viewfold');
+app.use(bodyParser.urlencoded({extended:true}))
+
+//Routes
+app.get('/', async (req,res)=>{
+    let database=await dbo.getDatabase();
+    const collection= database.collection("emp")
+    const cursur=collection.find({})
+    let datas=await cursur.toArray()
+    let msg=''
+    let edit_id,edit_emp
+
+    if(req.query.edit_idd){
+        edit_id=req.query.edit_idd
+        edit_emp=await collection.findOne({_id:new objid(edit_id)})
+    }
+
+    if(req.query.del_idd){
+        del_id=req.query.del_idd
+        await collection.deleteOne({_id:new objid(del_id)})
+
+        res.redirect('/?status=3');
+    }
+
+    if(req.query.status==='1'){
+        msg='Inserted Successfully'
+    }
+    else if(req.query.status==='2'){
+        msg='Updated Successfully'
+    }
+    else if(req.query.status==='3'){
+        msg='Deleted Successfully'
+    }
+    console.log('the data',datas)
+    res.render('maincopy',{msg,datas,edit_id,edit_emp})
+});
+
+app.post('/empinfo', async (req,res)=>{
+    let database=await dbo.getDatabase()
+    const collection=database.collection("emp")
+    const employee={empid:req.body.eid , empname:req.body.ename}
+    await collection.insertOne(employee)
+
+    res.redirect('/?status=1');
+})
+
+app.post('/updateinfo/:e_id', async (req,res)=>{
+    let database=await dbo.getDatabase()
+    const collection=database.collection("emp")
+    const employee={empid:req.body.eid , empname:req.body.ename}
+    let e_idd=req.params.e_id
+    await collection.updateOne({_id:new objid(e_idd)},{$set:employee})
+
+    res.redirect('/?status=2');
+})
+
+//Start the server
+app.listen(8000,()=>{
+    console.log('Listening on port 8000...')
+})
+```
+
+### maincopy.js
+
+```
+<!DOCTYPE html>
+<html lang="'en">
+    <head>
+        <title>MONGODB CRUD </title>
+    </head>
+    <body>
+        <h1>MongoDB Crud example</h1>
+
+        {{#if edit_id}}
+        <h2>Edit Form</h2>
+        <form action="/updateinfo/{{edit_id}}" method="post">
+            <label>Emp id</label>
+            <input type="text" name="eid" value="{{edit_emp.empid}}"><br><br>
+            <label>Emp Name</label>
+            <input type="text" name="ename" value="{{edit_emp.empname}}"><br><br>
+            <input type="submit" value="Update">
+        </form><br>
+        {{else}}
+        <h2>Create Form</h2>
+        <form action="/empinfo" method="post">
+            <label>Emp id</label>
+            <input type="text" name="eid"><br><br>
+            <label>Emp Name</label>
+            <input type="text" name="ename"><br><br>
+            <input type="submit">
+        </form><br>
+        {{/if}}
+
+        <ul>
+            {{#each datas}}
+            <li>{{this.empid}} {{this.empname}} <a href="/?edit_idd={{this._id}}">Edit</a> |
+            <a href="/?del_idd={{this._id}}" onClick="return confirm('Are u want to del?')">Delete</a></li> 
+            {{/each}}
+        </ul>
+        <p>{{msg}}</p>
+    </body>
+
+</html>
+```

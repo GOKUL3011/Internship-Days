@@ -1,0 +1,165 @@
+### useContext Hook
+
+- Directly parent can give their content to child
+- Local State
+
+```jsx
+import { createContext, useContext, useState } from "react"
+
+const userContext=createContext()
+export default function Parent2(){
+      const[user]=useState('sai')
+return(
+    <>
+    <userContext.Provider value={user}>
+    <h1>welcome useContext Hook</h1>
+    <C1/>
+    </userContext.Provider>
+    </>
+)}
+function C1( ){
+     return(
+         <>
+         <h1>C1</h1>
+         <C2  />
+         </>
+    )}
+function C2( ){
+    return(
+         <>
+         <h1>C2</h1>
+         <C3 />
+         </>
+    )
+}
+ function C3( ){
+    return(
+         <>
+         <h1>C3</h1>
+         <C4 />
+         </>
+    )
+
+}function C4( ){
+    return(
+         <>
+         <h1>C4</h1>
+         <C5  />
+         </>
+    )
+
+}
+function C5(userContext){
+    const user=useContext(userContext)
+    return(
+         <>
+         <h1>C5 the data is {user}</h1>
+          
+         </>
+    )
+
+}
+```
+
+### Form
+
+```jsx
+import { useState } from "react";
+
+export default function Form(){
+    const [name,setName]=useState('')
+    const [roll,setRoll]=useState('')
+    const [age,setAge]=useState('')
+
+    function formSubmit(formdata)
+    {    
+        formdata.preventDefault()
+        console.log('success............')
+    }
+
+    return(
+        <>
+        <form onSubmit={formSubmit}>
+            Name:<input type='text' onChange={(data)=>{setName(data.target.value)}}></input>
+            Rollno:<input type='text' onChange={(data)=>{setRoll(data.target.value)}}></input>
+            Age:<input type='text' onChange={(data)=>{setAge(data.target.value)}}></input>
+            <input type="submit" value="signup"></input>
+
+        </form>
+        <h1>The name is {name}</h1>
+        <h1>Roll no is {roll}</h1>
+        <h1>Age is {age}</h1>
+        </>
+    )
+}
+```
+
+### Using object
+
+```jsx
+import { useState } from "react";
+
+export default function Form(){
+    const [obj,setObj]=useState({name:'',roll:'',gender:'',city:''})
+
+    function formSubmit(formdata)
+    {    
+        formdata.preventDefault()
+        console.log('success............')
+    }
+
+    return(
+        <>
+        <form onSubmit={formSubmit}>
+            Name: <input type='text' onChange={(data)=>{setObj({...obj,name:data.target.value})}}></input><br/><br/>
+            Rollno: <input type='text' onChange={(data)=>{setObj({...obj,roll:data.target.value})}}></input><br/><br/>
+            Gender: <input type='text' onChange={(data)=>{setObj({...obj,gender:data.target.value})}}></input><br/><br/>
+            City: <input type='text' onChange={(data)=>{setObj({...obj,city:data.target.value})}}></input><br/><br/>
+            <input type="submit" value="signup"></input>
+
+        </form>
+        <h1>The name is {obj.name}</h1>
+        <h1>Roll no is {obj.roll}</h1>
+        <h1>Gender is {obj.gender}</h1>
+        <h1>City is {obj.city}</h1>
+        </>
+    )
+}
+```
+
+```jsx
+import { useState } from "react";
+
+export default function Form(){
+    const [obj,setObj]=useState({name:'',roll:'',gender:'',city:''})
+
+    function formSubmit(formdata)
+    {    
+        formdata.preventDefault()
+        console.log('success.........',obj.city,obj.gender,obj.name,obj.roll)
+    }
+
+    function updData(data){
+        var variable=data.target.name
+        var val=data.target.value
+        setObj(()=>{return {...obj,[variable]:val}})
+    }
+
+    return(
+        <>
+        <form onSubmit={formSubmit}>
+            Name: <input type='text' name="name" onChange={updData}></input><br/><br/>
+            Rollno: <input type='text' name="roll" onChange={updData}></input><br/><br/>
+            Gender: <input type='text' name="gender" onChange={updData}></input><br/><br/>
+            City: <input type='text' name="city" onChange={updData}></input><br/><br/>
+            <input type="submit" value="signup"></input>
+
+        </form>
+        <h1>The name is {obj.name}</h1>
+        <h1>Roll no is {obj.roll}</h1>
+        <h1>Gender is {obj.gender}</h1>
+        <h1>City is {obj.city}</h1>
+        </>
+    )
+}
+```

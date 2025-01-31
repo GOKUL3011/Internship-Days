@@ -1,0 +1,116 @@
+### Routing
+
+```jsx
+import { BrowserRouter, Route, Routes,Link } from "react-router-dom";
+import Home from './Home'
+import About from './About'
+import Contact from './Contact'
+
+export default function App1(){
+    return(
+        <>
+        <h1>Welcome to page</h1>
+        <BrowserRouter>
+        <ul>
+            <li><Link to="/">HOME</Link></li>
+            <li><Link to="/aboutus">ABOUT</Link></li>
+            <li><Link to="/contactus/954628">CONTACT</Link></li>
+        </ul>
+        <Routes>
+            <Route path='/' element={<Home />}></Route>
+            <Route path='/aboutus' element={<About />}></Route>
+            <Route path='/contactus/:num' element={<Contact />}></Route>
+        </Routes>
+        
+        </BrowserRouter>
+
+        </>
+    )
+}
+```
+
+```jsx
+export default function Home(){
+    return(
+        <h1>Home Page</h1>
+    )
+}
+```
+
+```jsx
+export default function About(){
+    return(
+        <h1>About Page</h1>
+    )
+}
+```
+
+```jsx
+import { useParams } from 'react-router-dom';
+
+export default function Contact(){
+    const{num}=useParams()
+    return(
+        <>
+        <h1>Contact Page</h1>
+        <h1> Num : {num}</h1>
+        </>
+    )
+}
+```
+
+### Nested Routing
+
+```jsx
+import { BrowserRouter, Route, Routes,Link } from "react-router-dom";
+import Home from './Home'
+import About from './About'
+import Contact from './Contact'
+import Newbook from "./Newbook";
+import Oldbook from "./Oldbook";
+
+export default function App1(){
+    return(
+        <>
+        <h1>Welcome to page</h1>
+        <BrowserRouter>
+        <ul>
+            <li><Link to="/">HOME</Link></li>
+            <li><Link to="/aboutus">ABOUT</Link></li>
+            <li><Link to="/contactus/954628">CONTACT</Link></li>
+            <li><Link to="/book/newbook">New Book</Link> </li>
+            <li><Link to="/book/oldbook">Old Book</Link> </li>
+        </ul>
+        <Routes>
+            <Route path='/' element={<Home />}></Route>
+            <Route path='/aboutus' element={<About />}></Route>
+            <Route path='/contactus/:num' element={<Contact />}></Route>
+            <Route path='/book'>
+            <Route path='newbook' element={<Newbook/>}></Route>
+            <Route path='oldbook' element={<Oldbook/>}></Route>
+            </Route>
+        </Routes>
+        
+        </BrowserRouter>
+
+        </>
+    )
+}
+```
+
+### UseNavigate
+
+```jsx
+import { useNavigate } from 'react-router-dom'
+
+export default function Login(){
+    const nav=useNavigate()
+
+    return (
+        <>
+        <h1>Login page</h1>
+        <button onClick={()=>nav('/dashboard')}>Go to DashBoard</button>
+        </>
+    )
+}
+```

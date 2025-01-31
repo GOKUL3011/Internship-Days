@@ -1,0 +1,165 @@
+### Asynchronous
+
+- Allows multiple tasks to run independently of each other
+- While waiting for a task to complete, other tasks can proceed.
+
+```jsx
+function get(recCheckFun)
+{
+    name='sai'
+		setTimeout( ()=>{
+        if(name==='sai')
+        {
+            recCheckFun()
+        }
+    } ,2000)
+    console.log("Im in get")
+}
+function check()
+{
+    console.log('pass')
+}
+get(check)
+```
+
+### Synchronous
+
+- Operations are performed one after the other, in sequence
+- Each line of code waits for the previous one to finish before proceeding to the next
+
+```jsx
+function get(recCheckFun)
+{
+    name='sai'
+    if(name==='sai')
+    recCheckFun()
+    console.log("Im in get")
+}
+function check()
+{
+    console.log('pass')
+}
+get(check)
+```
+
+### Promise
+
+- Pending - Process of extracting the data
+- Resolve - Operation performed and data is fetched
+- Reject - when data is not available
+
+```jsx
+let result=new Promise((resolve,reject)=>{
+    let name="gokul"
+    setTimeout(()=>{
+        if(name==="gokul"){
+            resolve(name)
+        }
+        else{
+            reject("Data not found")
+        }
+    },2000)
+})
+
+result
+.then((name)=>{
+    console.log(name)
+})
+.catch((err)=>{
+    console.log("Error message",err)
+})
+.finally(()=>{
+    console.log("Finally block")
+})
+
+o/p
+gokul
+Finally block
+```
+
+- Promise class takes two function as its argument i.e) resolve and reject
+- Resolve function executes the then block
+- Reject function executes the catch block
+
+```jsx
+let result=new Promise((res,rej)=>{
+    let name=undefined
+    setTimeout(()=>{
+        if(name==="gokul"){
+            res(name)
+        }
+        else{
+            rej("Data not found")
+        }
+    },2000)
+})
+
+result
+.then((name)=>{
+    console.log(name)
+})
+.catch((err)=>{
+    console.log("Error message",err)
+})
+.finally(()=>{
+    console.log("Finally block")
+})
+
+o/p
+Error message Data not found
+Finally block
+```
+
+### Async function
+
+- Used when multiple Promise takes place
+
+```jsx
+const res = () => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const a = 'sai'; 
+            if (a==='sai') {
+                resolve(a);
+            } else {
+                reject(new Error('no data'));
+            }
+        }, 1000);
+    });
+};
+
+const handleData = async () => {
+    try {
+        const name = await res(); // Wait for the promise to resolve
+        console.log('received', name); // Handle resolved value
+    } catch (err) {
+        console.log(err.message); // Handle error stack
+    } finally {
+        console.log('received'); // Final message
+    }
+};
+
+handleData(); // Call the async function
+
+```
+
+### Map
+
+```jsx
+var a=[1,2,30]
+var s=0
+
+a.map((d)=>{console.log(d)})
+
+o/p
+1
+2
+30
+```
+
+```jsx
+a.map((d)=>{s+=d})
+
+o/p
+33
+```

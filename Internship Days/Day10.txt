@@ -1,0 +1,220 @@
+To display databases available
+
+```sql
+show dbs
+```
+
+to create and enter the database
+
+```sql
+use mern
+```
+
+To insert data
+
+```sql
+//One data
+mern> db.students.insertOne({name:'gokul',roll:40})
+//Many data
+db.students.insertMany([{name:'gokul',roll:40},
+								{name:'ram',roll:'49'}])
+//nested Docuent
+mern> db.students.insertOne({name:'gokul',roll:40,sub:{core:"maths",lang:"english"}
+... })
+```
+
+To display
+
+find() - returns cursor object
+
+```sql
+mern> db.students.find()
+
+[
+  {
+    _id: ObjectId('678f641baacf9ab5ca0d8191'),
+    name: 'gokul',
+    roll: 40
+  },
+  {
+    _id: ObjectId('678f650daacf9ab5ca0d8193'),
+    name: 'ram',
+    roll: '49'
+  }
+]
+```
+
+```sql
+mern> db.students.find({name:"gokul"})
+[
+  {
+    _id: ObjectId('678f641baacf9ab5ca0d8191'),
+    name: 'gokul',
+    roll: 40
+  },
+  {
+    _id: ObjectId('678f66b0aacf9ab5ca0d8194'),
+    name: 'gokul',
+    roll: 40,
+    sub: { core: 'maths', lang: 'english' }
+  }
+]
+
+mern> db.students.findOne({name:"gokul"})
+{ _id: ObjectId('678f641baacf9ab5ca0d8191'), name: 'gokul', roll: 40 }
+```
+
+```sql
+mern> db.students.find({},{_id:0})
+[
+  { name: 'gokul', roll: 40 },
+  { name: 'ram', roll: '49' },
+  { name: 'gokul', roll: 40, sub: { core: 'maths', lang: 'english' } }
+```
+
+When more data is available find() cant display all then convert toArray
+
+```sql
+mern> db.students.find().toArray()
+[
+  {
+    _id: ObjectId('678f641baacf9ab5ca0d8191'),
+    name: 'gokul',
+    roll: 40
+  },
+  {
+    _id: ObjectId('678f650daacf9ab5ca0d8193'),
+    name: 'ram',
+    roll: '49'
+  },
+  {
+    _id: ObjectId('678f66b0aacf9ab5ca0d8194'),
+    name: 'gokul',
+    roll: 40,
+    sub: { core: 'maths', lang: 'english' }
+  }
+]
+```
+
+To iterate over all data
+
+```sql
+mern> db.students.find().forEach((d)=>print('the data',d))
+the data { _id: ObjectId('678f641baacf9ab5ca0d8191'), name: 'gokul', roll: 40 }
+the data { _id: ObjectId('678f650daacf9ab5ca0d8193'), name: 'ram', roll: '49' }
+the data {
+  _id: ObjectId('678f66b0aacf9ab5ca0d8194'),
+  name: 'gokul',
+  roll: 40,
+  sub: { core: 'maths', lang: 'english' }
+}
+```
+
+To search nested document
+
+```sql
+mern> db.students.find({'sub.core':"maths"})
+[
+  {
+    _id: ObjectId('678f66b0aacf9ab5ca0d8194'),
+    name: 'gokul',
+    roll: 40,
+    sub: { core: 'maths', lang: 'english' }
+  }
+]
+```
+
+To Update the data
+
+```sql
+mern> db.students.updateOne({roll:40},{$set:{roll:42}})
+[
+  {
+    _id: ObjectId('678f641baacf9ab5ca0d8191'),
+    name: 'gokul',
+    roll: 42
+  },
+  { _id: ObjectId('678f650daacf9ab5ca0d8193'), name: 'ram', roll: 49 },
+  {
+    _id: ObjectId('678f66b0aacf9ab5ca0d8194'),
+    name: 'gokul',
+    roll: 40,
+    sub: { core: 'maths', lang: 'english' }
+  },
+  {
+    _id: ObjectId('678f73c5aacf9ab5ca0d8195'),
+    name: 'gokul',
+    roll: 41
+  }
+]
+```
+
+```sql
+mern> db.students.updateMany({name:'gokul'},{$set:{roll:40}})
+[
+  {
+    _id: ObjectId('678f641baacf9ab5ca0d8191'),
+    name: 'gokul',
+    roll: 40
+  },
+  { _id: ObjectId('678f650daacf9ab5ca0d8193'), name: 'ram', roll: 49 },
+  {
+    _id: ObjectId('678f66b0aacf9ab5ca0d8194'),
+    name: 'gokul',
+    roll: 40,
+    sub: { core: 'CSE', lang: 'english' }
+  },
+  {
+    _id: ObjectId('678f73c5aacf9ab5ca0d8195'),
+    name: 'gokul',
+    roll: 40
+  }
+]
+```
+
+```sql
+mern> db.students.updateOne({name:'gokul',sub:{$exists:true}},{$set:{roll:42}})[
+  {
+    _id: ObjectId('678f641baacf9ab5ca0d8191'),
+    name: 'gokul',
+    roll: 40
+  },
+  { _id: ObjectId('678f650daacf9ab5ca0d8193'), name: 'ram', roll: 49 },
+  {
+    _id: ObjectId('678f66b0aacf9ab5ca0d8194'),
+    name: 'gokul',
+    roll: 42,
+    sub: { core: 'CSE', lang: 'english' }
+  },
+  {
+    _id: ObjectId('678f73c5aacf9ab5ca0d8195'),
+    name: 'gokul',
+    roll: 40
+  }
+]
+```
+
+To delete data
+
+```sql
+mern> db.students.deleteOne({name:'ram'})
+[
+  {
+    _id: ObjectId('678f641baacf9ab5ca0d8191'),
+    name: 'gokul',
+    roll: 40
+  },
+  {
+    _id: ObjectId('678f66b0aacf9ab5ca0d8194'),
+    name: 'gokul',
+    roll: 42,
+    sub: { core: 'CSE', lang: 'english' }
+  },
+  {
+    _id: ObjectId('678f73c5aacf9ab5ca0d8195'),
+    name: 'gokul',
+    roll: 40
+  }
+]
+```
+

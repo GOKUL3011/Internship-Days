@@ -1,0 +1,245 @@
+# React js
+
+### To create a file
+
+```
+npx create-react-app appname
+//to resolve error
+npm i web-vitals
+```
+
+### To start the file
+
+```
+appname start
+```
+
+### Component
+
+- Using function
+
+```visual-basic
+function Display( )
+{
+  
+    return (
+        <>
+        <h1>im coming from Datas.js  </h1>
+        <h3>this is from display</h3>
+        <h4>im the sec line</h4>
+        </>
+    )
+}
+export default Display
+
+or
+
+export default function Display( )
+{
+  
+    return (
+        <>
+        <h1>im coming from Datas.js  </h1>
+        <h3>this is from display</h3>
+        <h4>im the sec line</h4>
+        </>
+    )
+}
+```
+
+```visual-basic
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import Display from './Display'
+import Datas from './Datas'
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+  <Display/>
+  </React.StrictMode>
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
+```
+
+- using class
+
+```visual-basic
+import React from "react"
+class MyClass extends React.Component{
+    render(){
+
+        return (
+            <>
+            <h1> im from the class</h1>
+            <h1> im from the class hai welcome</h1>
+            </>
+        )
+    }
+}
+
+export default MyClass
+```
+
+### Props
+
+- Sharing datas from one component to anaother component
+
+```visual-basic
+import Display from "./Display"
+
+function Datas()
+{
+    const person={
+        empName:'dena',
+        city:'cbe'
+
+    }
+    let name='sai'
+    let roll=12
+    const ans=my name is ${name}
+    return(
+        <>
+        <h1>my name is  {name}</h1>
+        <h1>  {ans} </h1>
+       <Display n={name} roll={roll} gender='male' obj={person}/>
+        </>
+    )
+}
+export default Datas
+```
+
+```visual-basic
+function Display(values) 
+{
+  
+    const {n, roll,gender, obj}=values
+    const {empName,city}=obj
+    return (
+        <>
+        <h1>im coming from Datas.js {n} {roll} {gender} </h1>
+        <h2>{empName}, {city}</h2>
+        <h3>this is from display</h3>
+        <h4>im the sec line</h4>
+        </>
+    )
+}
+export default Display
+```
+
+```jsx
+export default function States(){
+    var clr='blue'
+    return(
+        <>
+        <h1>i like {clr} color</h1>
+        <button onClick={()=>{
+            clr='red'
+            console.log(clr)
+        }}>click here</button>
+        </>
+    )
+}
+```
+
+### Hook
+useState Hook
+
+- The current state value.
+- A function to update this value.
+- it will reflect on UI
+
+```visual-basic
+import { useState } from "react"
+
+export default function States(){
+    var [clr,setClr]=useState('blue')
+    var [name,setName]=useState('ram')
+    return(
+        <>
+        <h1>my name is {name}</h1>
+        <h1>i like {clr} color</h1>
+        <button onClick={()=>{
+            setClr('red'),
+            setName('gokul')
+        }}>click here</button>
+        </>
+    )
+}
+```
+
+```visual-basic
+import { useState } from "react"
+
+export default function States(){
+
+     var [data,setData]=useState(
+        {
+            clr:'pink',
+            name:'sai'
+        }
+     )
+     
+    return(
+        <>
+        <h1> my name is {data.name}<br></br> i love {data.clr} color</h1>
+        <button onClick={()=>{ setData(
+            {
+                
+                    clr:'green',
+                    name:'ram'
+                 
+            }
+        )}
+            }>click here!! </button>
+        </>
+    )
+}
+```
+
+### Spread Operator
+
+- keeps rest of the data
+import { useState } from "react"
+
+export default function States(){
+    var [data,setData]=useState({
+        clr:'blue',
+        name:'ram'
+    })
+    return(
+        <>
+        <h1>my name is {data.name}</h1>
+        <h1>i like {data.clr} color</h1>
+        <button onClick={()=>{
+            setData(
+                {
+                    ...data, //spread operator
+                    clr:'red'
+                }
+            )
+        }}>Update Clr</button>
+
+        <button onClick={()=>{
+            setData({
+                ...data,
+                name:'gokul'
+            })
+        }}>Update name</button>
+        <br></br>
+
+        <button onClick={()=>{
+            setData({
+                clr:'red',
+                name:'gokul'
+            })
+        }}>Update both</button>
+        </>
+    )
+}

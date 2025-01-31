@@ -1,0 +1,414 @@
+### Array Operations
+
+### Push
+
+```jsx
+let a=[12,4,"gokul",23.4]
+let datas=[100,200,300]
+let person={name:"gokul",roll:40}
+console.log(a)
+a.push(datas,800,person)
+console.log(a)
+
+o/p
+[ 12, 4, 'gokul', 23.4 ]
+[
+  12,
+  4,
+  'gokul',
+  23.4,
+  [ 100, 200, 300 ],
+  800,
+  { name: 'gokul', roll: 40 }
+]
+
+```
+
+```jsx
+a[4].push(400)
+console.log(a)
+
+o/p
+[
+  12,
+  4,
+  'gokul',
+  23.4,
+  [ 100, 200, 300, 400 ],
+  800,
+  { name: 'gokul', roll: 40 }
+]
+
+```
+
+### Unshift
+
+- Adds data at the beginning of the array
+- if more than one data is inserted then it follows the order of data given
+- else the element will be added at first
+
+```jsx
+let a=[12,4,"gokul",23.4]
+let datas=[100,200,300]
+let person={name:"gokul",roll:40}
+console.log(a)
+a.unshift(datas,800,person) //
+console.log(a)
+
+o/p
+[ 12, 4, 'gokul', 23.4 ]
+[
+  [ 100, 200, 300 ],
+  800,
+  { name: 'gokul', roll: 40 },
+  12,
+  4,
+  'gokul',
+  23.4
+]
+```
+
+### Pop
+
+```jsx
+let a=[12,4,"gokul",23.4]
+let datas=[100,200,300]
+let person={name:"gokul",roll:40}
+a.push(datas,800,person)
+console.log(a)
+res1=a.pop()
+console.log("result:",res1)
+console.log(a)
+res2=a[4].pop()
+console.log(a)
+
+o/p
+[
+  12,
+  4,
+  'gokul',
+  23.4,
+  [ 100, 200, 300 ],
+  800,
+  { name: 'gokul', roll: 40 }
+]
+result: { name: 'gokul', roll: 40 }
+[ 12, 4, 'gokul', 23.4, [ 100, 200, 300 ], 800 ]
+[ 12, 4, 'gokul', 23.4, [ 100, 200 ], 800 ]
+```
+
+### Shift
+
+To remove the first element
+
+```jsx
+let a=[20,5.8,"gokul"]
+res=a.shift()
+console.log("Result:",res)
+
+o/p
+Result: 20
+```
+
+### Deletion
+
+```jsx
+let a=[12,4,"gokul",23.4]
+console.log(a)
+console.log("Length:",a.length)
+res=delete a[1]
+console.log(a)
+console.log("Length:",a.length,"\n")
+
+for(let i=0;i<a.length;i++)
+console.log(a[i])
+
+o/p
+
+[ 12, 4, 'gokul', 23.4 ]
+Length: 4
+[ 12, <1 empty item>, 'gokul', 23.4 ]
+Length: 4 
+
+12
+undefined
+gokul
+23.4
+
+```
+
+### Sum of Array
+
+```jsx
+let a=[12,4,1]
+var s=0
+ 
+
+for(let i=0;i<a.length;i++)
+s=s+a[i]
+console.log(s)
+
+o/p
+17
+
+```
+
+### Reverse
+
+```jsx
+let n=123
+let a=0
+while(n!=0)
+{
+	let r=n%10
+	a=a*10+r
+	n=Math.floor(n/10)
+}
+console.log(a)
+
+o/p
+321
+```
+
+### Splice
+
+- To remove and replace the data
+
+```jsx
+let a=[10,20,30,40]
+console.log(a)
+console.log(a.length)
+a.splice(1,2,"gokul") //index,num of elements dont want
+console.log(a)
+console.log(a.length)
+
+o/p
+[ 10, 20, 30, 40 ]
+4
+[ 10, 'gokul', 40 ]
+3
+```
+
+### Slice
+
+```jsx
+let a=[10,20,30,40,50,60,70]
+res=a.slice(1,4)
+console.log(res)
+
+o/p
+[ 20, 30, 40 ]
+```
+
+### Objects
+
+### Accessing the data
+
+```jsx
+let person={
+	name:"gokul",
+	roll:40
+}
+console.log(person)
+console.log("dot notation: ",person.name ," ",person.roll)
+console.log("sqr brkt notation: ",person["name"] ," ",person["roll"])
+
+o/p
+{ name: 'gokul', roll: 40 }
+dot notation:  gokul   40
+sqr brkt notation:  gokul   40
+
+```
+
+### Changing the data
+
+```jsx
+let person={
+  roll:12,
+  name:"sai"
+}
+person.name="ram"
+person['roll']=1
+console.log(person)
+
+o/p
+{ roll: 1, name: 'ram' }
+```
+
+```jsx
+let person={
+  roll:12,
+  name:"sai"
+}
+person.city="CBE"
+person['state']='TN'
+person.name="ram"
+person['roll']=1
+console.log(person)
+
+o/p
+{ roll: 1, name: 'ram', city: 'CBE', state: 'TN' }
+```
+
+### Deletion of data
+
+```jsx
+let person={
+  roll:12,
+  name:"sai"
+}
+person.city="CBE"
+person['state']='TN'
+person.name="ram"
+person['roll']=1
+console.log(person)
+//delete person.roll
+delete person['roll']
+console.log('after del',person)
+
+o/p
+{ roll: 1, name: 'ram', city: 'CBE', state: 'TN' }
+after del { name: 'ram', city: 'CBE', state: 'TN' }
+
+```
+
+### Traversing
+
+```jsx
+let person={
+  roll:12,
+  name:"sai",
+  city:"CBE",
+  state:"TamilNadu"
+}
+for(let key in person){
+console.log(key,":",person[key])
+}
+
+o/p
+roll : 12
+name : sai
+city : CBE
+state : TamilNadu
+```
+
+### Arrays of Object
+
+```jsx
+let person=[{
+  roll:12,
+  name:"sai"
+},{
+  roll:13,
+  name:"ram"
+}]
+console.log(person)
+for(let a of person){
+console.log(a.roll," "+a['name'])
+console.log(a)
+}
+
+o/p
+[ { roll: 12, name: 'sai' }, { roll: 13, name: 'ram' } ]
+12  sai
+{ roll: 12, name: 'sai' }
+13  ram
+{ roll: 13, name: 'ram' }
+```
+
+### Destruction
+
+```jsx
+//sample code 1:
+const person={
+  roll:12,
+  name:"sai",
+  gender:"male"
+}
+let {roll,name,gender}=person
+console.log(roll," ",name," ",gender)
+console.log(person)
+
+o/p
+12   sai   male
+{ roll: 12, name: 'sai', gender: 'male' }
+```
+
+```jsx
+//sample code 2:
+const person={
+  r:12,
+  n:"sai",
+  g:"male"
+}
+let {n:name,r:roll,g:gender}=person
+console.log(name," ",roll," ",gender)
+console.log(person)
+
+o/p
+12   sai   male
+{ roll: 12, name: 'sai', gender: 'male' }
+```
+
+```jsx
+//sample code 3:
+const person={
+  r:12,
+  n:"sai",
+  g:"male"
+}
+let {n:name,r:roll,g:gender,city='cbe'}=person
+console.log(name," ",roll," ",gender," ",city)
+console.log(person)
+
+o/p
+sai   12   male   cbe
+{ r: 12, n: 'sai', g: 'male' }
+```
+
+### Destruction using rest operator
+
+```jsx
+const person={
+  roll:12,
+  name:"sai",
+  gender:"male"
+}
+let {roll,...restdatas}=person //using ...variable
+console.log(roll,restdatas)
+console.log(person)
+
+o/p
+12 { name: 'sai', gender: 'male' }
+{ roll: 12, name: 'sai', gender: 'male' }
+```
+
+### Rest Operator
+let a=[1,2,3,4]
+let b=['hi',...a]
+console.log(b)
+
+o/p
+[ 'hi', 1, 2, 3, 4 ]
+
+let a=[1,2,3,4]
+let b=['hi']
+b.push(...a)
+console.log(b)
+
+o/p
+[ 'hi', 1, 2, 3, 4 ]
+
+function add(...a)
+{
+    s=0
+    for(let i=0;i<a.length;i++)
+     s=s+a[i]
+    return s
+}
+ 
+
+console.log('hai')
+res=add(1,2,2,2,2,2,3,)
+ 
+console.log(res)

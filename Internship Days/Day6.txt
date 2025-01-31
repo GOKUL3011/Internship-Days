@@ -1,0 +1,193 @@
+### useEffect Hook
+
+- used to see render in the console when the state is changed
+- it takes two args one as call back function and anther as dependency array
+- when array is empty rendering count will not be done and if any val is passed then , only when the given state is changed the render is increaced
+
+```jsx
+import { useState , useEffect } from "react"
+
+export default function Test(){
+    var [val,setVal]=useState(0)
+    useEffect(()=>{
+        console.log('rendering...')
+    })
+    return(
+        <>
+        <h1>The Value is {val}</h1>
+        <button onClick={()=>{
+            setVal(val+1)
+        }}>Increment Val</button>
+        </>
+    )
+
+} 
+```
+
+```jsx
+import { useState , useEffect } from "react"
+
+export default function Test(){
+    var [val1,setVal1]=useState(0)
+    var [val2,setVal2]=useState(0)
+    useEffect(()=>{
+        console.log('rendering...')
+    },[])
+    return(
+        <>
+        <h1>The Value is {val1}</h1>
+        <h1>The Value is {val2}</h1>
+
+        <button onClick={()=>{
+            setVal1(val1+1)
+        }}>Increment Val1</button>
+
+        <button onClick={()=>{
+            setVal2(val2+1)
+        }}>Increment Val2</button>
+        </>
+    )
+
+}
+```
+
+```jsx
+import { useState , useEffect } from "react"
+
+export default function Test(){
+    var [val1,setVal1]=useState(0)
+    var [val2,setVal2]=useState(0)
+    useEffect(()=>{
+        console.log('rendering...')
+    },[val1])
+    return(
+        <>
+        <h1>The Value is {val1}</h1>
+        <h1>The Value is {val2}</h1>
+
+        <button onClick={()=>{
+            setVal1(val1+1)
+        }}>Increment Val1</button>
+
+        <button onClick={()=>{
+            setVal2(val2+1)
+        }}>Increment Val2</button>
+        </>
+    )
+
+}
+```
+
+### useReducer Hook
+
+- When implementation logic is vast useReducer is used
+
+```jsx
+import { useReducer } from "react"
+export default function Demo(){
+
+    const transcationReducer=(balance,obj)=>{
+        switch(obj.type){
+            case 'WITHDRAW':
+                return balance-obj.amount;
+                
+            case 'DEPOSIT':
+                return balance+obj.amount;
+        }
+    }
+
+    function withdraw(amt){
+        dispatch({type:'WITHDRAW' , amount:amt})
+    }
+
+    const deposit=(amt)=> {
+        dispatch({type:'DEPOSIT' , amount:amt})
+    }
+
+    const [balance,dispatch]= useReducer(transcationReducer,1000)
+    
+    return(
+        <>
+        <h1>the balance val is {balance}</h1>
+         
+        <button onClick={()=>withdraw(500)}>Withdraw</button>
+        <button onClick={()=>deposit(1000)}>Deposit</button>
+
+        </>
+    )
+}
+```
+
+### Props Drilling
+
+- Parent conatiner provides data to child from childs
+
+```jsx
+import Child1 from './Child1'
+
+export default function Parent(){
+    const num=40
+
+    return(
+        <>
+        <Child1 ch1={num}></Child1>
+        </>
+    )
+}
+```
+
+```jsx
+import Child2 from './Child2'
+
+export default function Child1(val){
+    const {ch1}=val
+    return(
+        <Child2 ch2={ch1}></Child2>
+    )
+}
+```
+
+```jsx
+import Child3 from './Child3'
+
+export default function Child2(val){
+    const {ch2}=val
+    return(
+        <Child3 ch3={ch2}></Child3>
+    )
+}
+```
+
+```jsx
+import Child4 from './Child4'
+
+export default function Child3(val){
+    const {ch3}=val
+
+    return(
+        <Child4 ch4={ch3}></Child4>
+    )
+}
+```
+
+```jsx
+import Child5 from './Child5'
+
+export default function Child4(val){
+    const {ch4}=val
+
+    return(
+        <Child5 ch5={ch4}></Child5>
+    )
+}
+```
+
+```jsx
+export default function Child5(val){
+    const {ch5}=val
+
+    return(
+        <h1>The value from parent is {ch5}</h1>
+    )
+}
+```

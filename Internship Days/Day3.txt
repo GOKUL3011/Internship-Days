@@ -1,0 +1,177 @@
+### Function Types
+
+### No Args No return
+
+```jsx
+function disp()
+{
+	console.log("hello")
+}
+disp()
+```
+
+### With Args No return
+
+```jsx
+function disp(a,b)
+{
+	console.log(a,b)
+}
+disp(10,20)
+```
+
+### With Args With return
+
+```jsx
+function disp(a,b)
+{
+	return a+b
+}
+res=disp(10,20)
+console.log(res)
+```
+
+### No Args With return
+
+```jsx
+function disp()
+{
+	return 10
+}
+res=disp()
+console.log(res)
+```
+
+### Array Destruction
+
+```jsx
+let a=[10,20,30,40]
+let [p,q]=a
+let [one,,,four]=a
+console.log(p,q)
+console.log(one,four)
+
+o/p
+10 20
+10 40
+```
+
+```jsx
+let a=[1,2,3,40,58,60,70,80,90]
+let [p,q,...restdata ]=a
+ 
+console.log(p)
+console.log(q)
+
+console.log(restdata,typeof(restdata))
+
+let[r1,r2]=restdata
+
+console.log(r1)
+console.log(r2)
+
+o/p
+1
+2
+[
+   3, 40, 58, 60,
+  70, 80, 90
+] object
+3
+40
+```
+
+### Closure Function
+
+Even after the function is the over,still we can access the function
+
+```jsx
+function out()
+{
+    function inner()
+    {
+        console.log('im inside the inner fun!!!')
+        
+    }
+    console.log('im inside the out fun')
+   return inner
+}
+inn=out()
+inn()
+
+o/p
+im inside the out fun
+im inside the inner fun!!!
+```
+
+```jsx
+function out()
+{
+     console.log('im inside the out fun')
+    return function()
+    {
+        console.log('im inside the inner fun!!!')
+    }
+}
+inn=out()
+inn()
+
+o/p
+im inside the out fun
+im inside the inner fun!!!
+```
+
+### Function expression
+
+- Hoisting only works on function declaration
+
+```jsx
+let myFun=function out()
+{
+     console.log('im inside the out fun')
+    return function()
+    {
+        console.log('im inside the inner fun!!!')
+    }
+}
+inn=myFun()
+inn()
+```
+
+### Arrow Function
+
+- used when repetation of function is not required
+
+```jsx
+let a=()=>{
+    console.log("Welcome")
+}
+a()
+
+or
+
+let a=()=> console.log("Welcome")
+a()
+```
+
+- For single line code no need of curly braces but for return statement curly braces are required
+
+let a=(x,y)=> return x+y // this gives error
+res=a(10,20)
+console.log(res)
+======================================
+let a=(x,y)=> x+y // this gives correct output
+res=a(10,20)
+console.log(res)
+
+let a=(x,y)=>{
+    console.log(x+y)
+}
+a(10,20)
+
+let a=(x,y)=>{
+		c=x+y
+    return c
+}
+res=a(10,20)
+console.log(res)
